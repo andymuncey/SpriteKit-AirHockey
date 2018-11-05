@@ -3,6 +3,7 @@ import SpriteKit
 class GameScene: SKScene, MalletDelegate {
     
     var puck : SKShapeNode?
+    let puckRadius : CGFloat = 30
     var southMallet : Mallet?
     var northMallet : Mallet?
     
@@ -13,11 +14,11 @@ class GameScene: SKScene, MalletDelegate {
         let northMalletArea = CGRect(x: 0, y: size.height/2, width: size.width, height: size.height)
         let northMalletStartPoint = CGPoint(x: frame.midX, y: size.height * 0.75)
         
-        southMallet = malletAt(position: southMalletStartPoint, withBoundary: southMalletArea)
-        northMallet = malletAt(position: northMalletStartPoint, withBoundary: northMalletArea)
+        southMallet = mallet(at: southMalletStartPoint, boundary: southMalletArea)
+        northMallet = mallet(at: northMalletStartPoint, boundary: northMalletArea)
     }
     
-    func malletAt(position: CGPoint, withBoundary boundary:CGRect) -> Mallet{
+    func mallet(at position: CGPoint, boundary:CGRect) -> Mallet{
         
         let mallet = Mallet(activeArea: boundary)
         mallet.position = position
@@ -71,8 +72,6 @@ class GameScene: SKScene, MalletDelegate {
     }
     
     override func didMove(to view: SKView) {
-  
-        
         drawCenterLine()
         createMallets()
         resetPuck()
@@ -80,19 +79,20 @@ class GameScene: SKScene, MalletDelegate {
     }
     
     func force(_ force: CGVector, fromMallet mallet: Mallet) {
-        
-        let collisionDistanceSquared = mallet.radius * mallet.radius + 30 * 30
+        let collisionDistanceSquared = (mallet.radius * mallet.radius) + (puckRadius * puckRadius)
         
         let actualDistanceX = mallet.position.x - puck!.position.x
         let actualDistanceY = mallet.position.y - puck!.position.y
         
-        let actualDistanceSquared = actualDistanceX * actualDistanceX + actualDistanceY * actualDistanceY
+        let actualDistanceSquared = (actualDistanceX * actualDistanceX) + (actualDistanceY * actualDistanceY)
         
         if  actualDistanceSquared <= collisionDistanceSquared{
             puck!.physicsBody!.applyImpulse(force)
         }
-//        //using boxes method - innacurate
-//        if CGRectIntersectsRect(mallet.frame, puck!.frame){
+    
+        
+        //using boxes method - innacurate
+//        if mallet.frame.intersects(puck!.frame){
 //            puck!.physicsBody!.applyImpulse(force)
 //        }
     }
@@ -112,18 +112,15 @@ class GameScene: SKScene, MalletDelegate {
             puck = SKShapeNode()
             
             //draw puck
-            let radius : CGFloat = 30.0
             let puckPath = CGMutablePath()
             let π = CGFloat.pi
-           // puckPath.add
-            puckPath.addArc(center: CGPoint(x: 0, y:0), radius: radius, startAngle: 0, endAngle: π*2, clockwise: true)
-            //CGPathAddArc(puckPath, nil, 0, 0, radius, 0, 2 * π, true)
+            puckPath.addArc(center: CGPoint(x: 0, y:0), radius: puckRadius, startAngle: 0, endAngle: π*2, clockwise: true)
             puck!.path = puckPath
             puck!.lineWidth = 0
             puck!.fillColor = UIColor.blue
             
             //set puck physics properties
-            puck!.physicsBody = SKPhysicsBody(circleOfRadius: radius)
+            puck!.physicsBody = SKPhysicsBody(circleOfRadius: puckRadius)
             
             //how heavy it is
             puck!.physicsBody!.mass = 0.02
