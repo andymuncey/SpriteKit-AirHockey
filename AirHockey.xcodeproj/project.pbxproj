@@ -46,7 +46,6 @@
 		BB8CE7281AEE86BF00FA0585 = {
 			isa = PBXGroup;
 			children = (
-				BB8CE75A1AEE875300FA0585 /* Mallet.swift */,
 				BB8CE7331AEE86BF00FA0585 /* AirHockey */,
 				BB8CE74D1AEE86C000FA0585 /* AirHockeyTests */,
 				BB8CE7321AEE86BF00FA0585 /* Products */,
@@ -67,6 +66,7 @@
 				BB8CE7361AEE86BF00FA0585 /* AppDelegate.swift */,
 				BB8CE7381AEE86BF00FA0585 /* GameScene.sks */,
 				BB8CE73A1AEE86BF00FA0585 /* GameScene.swift */,
+				BB8CE75A1AEE875300FA0585 /* Mallet.swift */,
 				BB8CE73C1AEE86BF00FA0585 /* GameViewController.swift */,
 				BB8CE73E1AEE86BF00FA0585 /* Main.storyboard */,
 				BB8CE7411AEE86C000FA0585 /* Images.xcassets */,
